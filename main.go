@@ -3,10 +3,11 @@ package main
 import (
 	"os"
 
+	"firehoseplugin/firehose"
+
 	"github.com/cloudfoundry/cli/cf/terminal"
 	"github.com/cloudfoundry/cli/cf/trace"
 	"github.com/cloudfoundry/cli/plugin"
-	"github.com/cloudfoundry/firehose-plugin/firehose"
 	"github.com/simonleung8/flags"
 )
 

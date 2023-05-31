@@ -7,8 +7,9 @@ import (
 	"fmt"
 
 	"github.com/cloudfoundry/cli/cf/terminal"
-	"github.com/cloudfoundry/noaa/consumer"
+	"github.com/cloudfoundry/noaa/v2/consumer"
 	"github.com/cloudfoundry/sonde-go/events"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 type Client struct {
@@ -92,7 +93,12 @@ func (c *Client) Start() {
 
 	for envelope := range output {
 		if filter == "" || filter == strconv.Itoa((int)(envelope.GetEventType())) {
-			c.ui.Say("%v \n", envelope)
+			b, err := protojson.Marshal(envelope)
+			if err != nil {
+				c.ui.Say("%v \n", envelope)
+				panic(fmt.Errorf("failed to marshall: %w", err))
+			}
+			c.ui.Say("%v \n", string(b))
 		}
 	}
 	<-done
